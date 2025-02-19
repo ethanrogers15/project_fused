@@ -13,6 +13,9 @@ that was used to develop the detection fusion algorithm for the project.
 The ROS2 environment repository is located here:
 https://github.com/ethanrogers15/project_fused_ros
 
+The ROS2 demo environment is located here: 
+https://github.com/ethanrogers15/project_fused_ros_demo
+
 The model training environment is located here:
 https://github.com/ethanrogers15/mediapipe_model_maker
 
