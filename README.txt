@@ -10,14 +10,13 @@ Point of Contact: Ethan Rogers, ethan.c.rogers@gmail.com
 This repository contains a public-facing version of the virtual environment 
 that was used to develop the detection fusion algorithm for the project. 
 
-Other repositories for the ROS2 environment are located here:
+The ROS2 environment repository is located here:
 https://github.com/ethanrogers15/project_fused_ros (more presentable version)
-https://github.com/ethanrogers15/project_fused_ros_original (original environment)
 
 To run this virtual environment, you will need Docker Desktop and VSCode with
 the Remote Development & Dev Containers extensions. The virtual environments
 for Project FUSED were built on a Windows laptop, but we used WSL with Ubuntu
-to interface with the ROS environment. So, we recommend making sure that WSL 
+to interface with the ROS environment. So, we recommend making sure that WSL
 is set up with Ubuntu if you are using a Windows laptop. 
 
 After cloning the repository to a directory in your file system, opening the 
