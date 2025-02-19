@@ -1,0 +1,92 @@
+WORKFLOW ALGORITHM
+
+INPUT: Combination IoU threshold, decision making mode, 3 synchronized images - 
+       LiDAR, thermal, webcam
+
+       Combination IoU threshold: the minimum Intersection-over-Union (IoU) 
+       required for two detections from different sensors to be considered the
+       same detection - probably set to 0.5
+
+       Decision making mode: which sensors need to agree for the workflow to 
+       output a detection result? All 3? Only 2?
+
+       3 synchronized images: read in from data directory
+
+OUTPUT: Detection results (bounding box coordinates, label, confidence, etc - 
+        MediaPipe has a neat format for it) from individual sensors on each 
+        image, and the workflow detection result mapped onto all three sensors
+
+STEPS:
+
+    1: Define the full path to the testing directory (example '/fused_dev/data/Testing_Mannequin_Sitting_Further')
+       and find the number of images in each subdirectory (lidar, lidar_color, thermal, ...) - the number
+       of images should be the same for all subdirectories in each directory.
+
+    2: Define the full path to the output directory that will contain new images with individual and combined
+       detection result bounding boxes drawn on them
+
+    3: Initialize the object detection models using MediaPipe and referencing the paths to the models in the 
+       models directory
+
+    4: Define all transformation vectors and matrices between the sensors - translations, rotations, and intrinsic 
+       matrices for each sensor
+
+    5: Start for loop - the number of iterations should be the same as the number of images in the subdirectories
+
+        The following steps apply to each iteration in the above for loop
+
+        5a: Define the full paths to the image files corresponding to the iteration number for lidar, thermal,
+            and webcam subdirectories (can include lidar_color and thermal_color too if desired)
+
+        5b: Read in the images as OpenCV images from their file names (full path). Also, perform image processing
+            on the LiDAR image for viewing. The original image is needed for depth data, but it has little information
+            when viewed unaltered.
+
+        5c: Convert all OpenCV images to RGB format
+
+        5d: Convert the RGB images to MediaPipe images
+
+        5e: Use the initialized object detection models to perform object detection on the MediaPipe images
+
+        5f: With the detection results for the three individual sensors, begin the detection combination steps
+            by starting another for loop iterating over all of the LiDAR detection results
+
+            The following steps apply to each iteration in the above for loop
+
+            5f1: Define the top left and bottom right points from the single LiDAR detection result - pixel coordinates
+
+            5f2: Determine the depth on the LiDAR image at the center of the box
+
+            5f3: If the depth is not zero, go to the next step (if not, skip)
+
+            5f4: Apply all transformations to get the top left and bottom right points from the LiDAR image mapped onto
+                 the thermal and webcam images
+
+            5f5: Calculate IoU between the mapped bounding box and all detection results from the webcam and thermal images
+
+            5f6: Choose the thermal or webcam detection result corresponding to the LiDAR mapped result whose IoU is the 
+                 largest and also above the defined Combination IoU threshold. In the next iterations of the for loop,
+                 the thermal or webcam detection result that was chosen should not be chosen again to match with another
+                 LiDAR mapped result
+
+            5f7: Depending on the decision making mode, choose to either keep the mapped result or not based on whether there 
+                 is agreement between all 3 or only two sensors
+
+            5f8: If the mapped result is not being kept, then go to the next iteration of the loop. If it is being kept, then
+                 keep the original detections that have been agreed upon according to the decision making mode. For the 
+                 detection that has not been agreed upon, check if it agrees with LiDAR. If it does, keep it. If it does not,
+                 then use the mapped LiDAR detection onto the appropriate camera frame instead
+                
+            5f9: Store the three fused detection results at each iteration
+
+            END FOR LOOP
+
+        5g: With all of the fused detections, create detection results
+
+        5h: Draw the bounding boxes on the images corresponding to the results
+
+        5i: View & output the 3 new images (LiDAR, thermal, webcam) with bounding boxes drawn on them to the output directory for viewing
+
+        END FOR LOOP
+
+    END OF ALGORITHM
