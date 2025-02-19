@@ -24,8 +24,7 @@ is set up with Ubuntu if you are using a Windows laptop.
 
 After cloning the repository to a directory in your file system, opening the 
 directory in VSCode will result in a prompt to "build" the environment as a 
-Dev Container. After starting the build, it will take 10-20 minutes to complete
-the process - some of the packages take a long time to install!
+Dev Container. After starting the build, it may take a long time to complete.
 
 Once the environment is built, make sure that the environment's Python
 interpreter is in use when selecting a Python file, and you should be good to
