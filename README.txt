@@ -11,7 +11,10 @@ This repository contains a public-facing version of the virtual environment
 that was used to develop the detection fusion algorithm for the project. 
 
 The ROS2 environment repository is located here:
-https://github.com/ethanrogers15/project_fused_ros (more presentable version)
+https://github.com/ethanrogers15/project_fused_ros
+
+The model training environment is located here:
+https://github.com/ethanrogers15/mediapipe_model_maker
 
 To run this virtual environment, you will need Docker Desktop and VSCode with
 the Remote Development & Dev Containers extensions. The virtual environments
