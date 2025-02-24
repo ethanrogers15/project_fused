@@ -162,8 +162,10 @@ class Fused_Workflow:
                         thermal_ious = []
                         for idxₜ, thermal_detection in enumerate(thermal_detection_result.detections):
                             if thermal_detection.categories[0].category_name != 'Person':
+                                thermal_ious.append(0.0)
                                 continue
                             if idxₜ in thermal_exclude_idx:
+                                thermal_ious.append(0.0)
                                 continue
                             thermal_bbox = thermal_detection.bounding_box
                             x1ₜ, y1ₜ = thermal_bbox.origin_x, thermal_bbox.origin_y
@@ -176,8 +178,10 @@ class Fused_Workflow:
                         webcam_ious = []
                         for idxᵣ, webcam_detection in enumerate(webcam_detection_result.detections):
                             if webcam_detection.categories[0].category_name != 'person':
+                                webcam_ious.append(0.0)
                                 continue
                             if idxᵣ in webcam_exclude_idx:
+                                webcam_ious.append(0.0)
                                 continue
                             webcam_bbox = webcam_detection.bounding_box
                             x1ᵣ, y1ᵣ = webcam_bbox.origin_x, webcam_bbox.origin_y
